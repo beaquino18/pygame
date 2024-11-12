@@ -14,7 +14,7 @@ class GameObject(pygame.sprite.Sprite):
     def render(self, screen):
         screen.blit(self.surf, (self.x, self.y))
 
-apple = GameObject(120, 300, 'images/apple.png')
+strawberry = GameObject(120, 300, 'images/strawberry.png')
 
 running = True
 while running:
@@ -26,7 +26,7 @@ while running:
     #Draw a circle
     screen.fill((255, 255, 255))
     #Draw box
-    apple.render(screen)
+    strawberry.render(screen)
     #Update the window
     pygame.display.flip()
 
