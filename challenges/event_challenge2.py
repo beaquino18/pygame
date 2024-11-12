@@ -1,3 +1,6 @@
+# Handling event challenge 2: Player can only move to one of the intersections of
+# the lanes that the apples and strawberries move along
+
 import pygame
 from random import randint, choice
 pygame.init()
@@ -60,29 +63,47 @@ class Strawberry(GameObject):
 class Player(GameObject):
     def __init__(self):
         super(Player, self).__init__(0, 0, 'images/player.png')
-        self.dx = 0
-        self.dy = 0
+        self.lanes = lanes
+        self.current_lane_x = 1 #this is index 1 of lane so, this is 218
+        self.current_lane_y = 1
         self.reset()
 
+    # Don't allow moving past left edge & move left one lane
     def left(self):
-        self.dx -= 100
+        if self.current_lane_x > 0:
+            self.current_lane_x -= 1
+            self.dx = self.lanes[self.current_lane_x]
 
+    # Don't allow moving past right edge
     def right(self):
-        self.dx += 100
+        if self.current_lane_x < len(self.lanes) - 1:
+            self.current_lane_x += 1
+            self.dx = self.lanes[self.current_lane_x]
 
+    # Don't allow moving past top edge
     def up(self):
-        self.dy -= 100
+        if self.current_lane_y > 0:
+            self.current_lane_y -= 1
+            self.dy = self.lanes[self.current_lane_y]
 
+    # Don't allow moving past bottom edge
     def down(self):
-        self.dy += 100
+        if self.current_lane_y < len(self.lanes) - 1:
+            self.current_lane_y += 1
+            self.dy = self.lanes[self.current_lane_y]
 
     def move(self):
         self.x -= (self.x - self.dx) * 0.25
         self.y -= (self.y - self.dy) * 0.25
 
     def reset(self):
-        self.x = 250 - 32
-        self.y = 250 - 32
+        #Start at center position
+        self.current_lane_x = 1
+        self.current_lane_y = 1
+        self.x = self.lanes[self.current_lane_x]
+        self.y = self.lanes[self.current_lane_y]
+        self.dx = self.x
+        self.dy = self.y
 
 
 apple = Apple()

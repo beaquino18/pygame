@@ -1,3 +1,6 @@
+# Handling event challenge 1: Ensure that the player image doesn't move beyond
+# the screen
+
 import pygame
 from random import randint, choice
 pygame.init()
@@ -62,27 +65,48 @@ class Player(GameObject):
         super(Player, self).__init__(0, 0, 'images/player.png')
         self.dx = 0
         self.dy = 0
+        self.width = 64
+        self.height = 64
         self.reset()
 
+    # Don't allow moving past left edge
     def left(self):
-        self.dx -= 100
+        if self.dx > 0:
+            self.dx -= 100
 
+    # Don't allow moving past right edge
     def right(self):
-        self.dx += 100
+        if self.dx < 500 - self.width:
+            self.dx += 100
 
+    # Don't allow moving past top edge
     def up(self):
-        self.dy -= 100
+        if self.dy > 0:
+            self.dy -= 100
 
+    # Don't allow moving past bottom edge
     def down(self):
-        self.dy += 100
+        if self.dy < 500 - self.height:
+            self.dy += 100
 
     def move(self):
-        self.x -= (self.x - self.dx) * 0.25
-        self.y -= (self.y - self.dy) * 0.25
+        # Calculate new position
+        new_x = self.x - (self.x - self.dx) * 0.25
+        new_y = self.y - (self.y - self.dy) * 0.25
+
+        # Clamp positions to screen boundaries
+        self.x = max(0, min(500 - self.width, new_x))
+        self.y = max(0, min(500 - self.height, new_y))
+
+        # Update target position (dx, dy) to prevent continued movement towards invalid positions
+        self.dx = max(0, min(500 - self.width, self.dx))
+        self.dy = max(0, min(500 - self.height, self.dy))
 
     def reset(self):
         self.x = 250 - 32
         self.y = 250 - 32
+        self.dx = self.x
+        self.dy = self.y
 
 
 apple = Apple()
