@@ -35,8 +35,30 @@ class Apple(GameObject):
     def reset(self):
         self.x = randint(50, 400)
         self.y = -64
+        
+
+class Strawberry(GameObject):
+    def __init__(self):
+        y = randint(50, 400)
+        super(Strawberry, self).__init__(0, 0, 'images/strawberry.png')
+        self.dx = (randint(0, 200) / 100) + 1
+        self.dy = 0
+        self.reset()
+    
+    def move(self):
+        self.x += self.dx
+        self.y += self.dy
+        #Check the y position of the apple
+        if self.x > 500:
+            self.reset()
+    
+    def reset(self):
+        self.x = -64
+        self.y = randint(50, 400)
+        
 
 apple = Apple()
+strawberry = Strawberry()
 
 running = True
 while running:
@@ -51,6 +73,9 @@ while running:
     #Draw apple
     apple.move()
     apple.render(screen)
+    
+    strawberry.move()
+    strawberry.render(screen)
     
     #Update the window
     pygame.display.flip()
