@@ -14,8 +14,11 @@ class GameObject(pygame.sprite.Sprite):
         self.surf = pygame.image.load(image)
         self.x = x
         self.y = y
+        self.rect = self.surf.get_rect() 
         
     def render(self, screen):
+        self.rect.x = self.x
+        self.rect.y = self.y
         screen.blit(self.surf, (self.x, self.y))
         
         
@@ -151,6 +154,10 @@ strawberry = Strawberry()
 player = Player()
 bomb = Bomb()
 
+fruit_sprites = pygame.sprite.Group()
+fruit_sprites.add(apple)
+fruit_sprites.add(strawberry)
+
 #Make a group
 all_sprites = pygame.sprite.Group()
 # Add sprites to group
@@ -185,6 +192,15 @@ while running:
     for entity in all_sprites:
         entity.move()
         entity.render(screen)
+    
+    #Check colisions
+    fruit = pygame.sprite.spritecollideany(player, fruit_sprites)
+    if fruit:
+        fruit.reset()
+    
+    #Check collision player and bomb
+    if pygame.sprite.collide_rect(player, bomb):
+        running = False
         
     # Update the window
     pygame.display.flip()
