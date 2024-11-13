@@ -6,6 +6,7 @@ from bomb import Bomb
 from player import Player
 from strawberry import Strawberry
 from constants import lanes
+from cloud import Cloud
 
 pygame.init()
 
@@ -16,13 +17,12 @@ clock = pygame.time.Clock()
 #Change background color
 background_color = (135, 206, 250)
 
-
-
 # Instantiate all objects
 apple = Apple()
 strawberry = Strawberry()
 player = Player()
 bomb = Bomb()
+cloud = Cloud()
 
 # Make a group
 all_sprites = pygame.sprite.Group()
@@ -37,6 +37,7 @@ all_sprites.add(player)
 all_sprites.add(apple)
 all_sprites.add(strawberry)
 all_sprites.add(bomb)
+all_sprites.add(cloud)
 
 
 # Game Loop
